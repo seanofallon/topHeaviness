@@ -160,7 +160,7 @@ Top_Heaviness_soil <- Top_Heaviness %>%
 
 # Create sand/clay ratio
 Top_Heaviness_soil <- Top_Heaviness_soil %>%
-  mutate(sandClay_ratio = log(sand_MeanToDepth / clay_MeanToDepth))
+  mutate(claySand_ratio = log(clay_MeanToDepth / sand_MeanToDepth))
 
 #### Top_Heaviness_soil - object of analysis ####
 Top_Heaviness_soil <- na.omit(Top_Heaviness_soil)
@@ -173,22 +173,22 @@ Top_Heaviness_soil <- Top_Heaviness_soil %>%
     cfvo_z = as.numeric(scale(cfvo_MeanToDepth)),
     ocd_z = as.numeric(scale(ocd_MeanToDepth)),
     bdod_z = as.numeric(scale(bdod_MeanToDepth)),
-    sandClay_z = as.numeric(scale(sandClay_ratio))
+    claySand_z = as.numeric(scale(claySand_ratio))
   )
 
 # Pairplot
-ggpairs(Top_Heaviness_soil[,c('cfvo_z','ocd_z','bdod_z','sandClay_z')])
+ggpairs(Top_Heaviness_soil[,c('cfvo_z','ocd_z','bdod_z','claySand_z')])
 
-ggpairs(Top_Heaviness_soil[,c('cfvo_MeanToDepth','ocd_MeanToDepth','bdod_MeanToDepth','sandClay_ratio')])
+ggpairs(Top_Heaviness_soil[,c('cfvo_MeanToDepth','ocd_MeanToDepth','bdod_MeanToDepth','claySand_ratio')])
 
-# bdod + sandClay_ratio (cor is 0.704, but they get at different things)
-model_vars <- lmer(topHeaviness ~ bdod_z + sandClay_z + (1 | Species), data = Top_Heaviness_soil)
+# bdod + claySand_ratio (cor is 0.704, but they get at different things)
+model_vars <- lmer(topHeaviness ~ bdod_z + claySand_z + (1 | Species), data = Top_Heaviness_soil)
 check_model(model_vars)
 summary(model_vars)
 
 
-# bdod + sandClay_ratio unscaled (cor is 0.704, but they get at different things)
-model_vars_unscaled <- lmer(topHeaviness ~ bdod_MeanToDepth + sandClay_ratio + (1 | Species), data = Top_Heaviness_soil)
+# bdod + claySand_ratio unscaled (cor is 0.704, but they get at different things)
+model_vars_unscaled <- lmer(topHeaviness ~ bdod_MeanToDepth + claySand_ratio + (1 | Species), data = Top_Heaviness_soil)
 check_model(model_vars_unscaled)
 summary(model_vars_unscaled)
 
